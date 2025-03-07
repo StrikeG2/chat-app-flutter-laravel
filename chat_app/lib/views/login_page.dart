@@ -33,7 +33,7 @@ class LoginScreen extends StatelessWidget {
                     passwordController.text,
                   );
                   await Provider.of<ApiService>(context, listen: false).setToken(response['access_token']);
-                  Navigator.pushReplacementNamed(context, '/chat');
+                  Navigator.pushReplacementNamed(context, '/');
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Failed to login: $e')),

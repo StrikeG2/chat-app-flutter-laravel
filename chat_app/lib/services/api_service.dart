@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../models/conversation.dart';
 import '../models/message_model.dart';
 
 class ApiService {
@@ -59,24 +60,75 @@ class ApiService {
     }
   }
 
-  Future<List<Message>> fetchMessages() async {
+  Future<List<Conversation>> fetchConversations() async {
     final token = await getToken();
     final response = await http.get(
-      Uri.parse('$baseUrl/messages'),
+      Uri.parse('$baseUrl/conversations'), // Assure-toi que l'URL est correcte
       headers: <String, String>{
         'Authorization': 'Bearer $token',
       },
     );
 
     if (response.statusCode == 200) {
-      List<dynamic> body = json.decode(response.body);
-      return body.map((dynamic item) => Message.fromJson(item)).toList();
+      final dynamic decodedResponse = json.decode(response.body);
+
+      if (decodedResponse is List) {
+        return decodedResponse.map((json) => Conversation.fromJson(json)).toList();
+      } else if (decodedResponse is Map<String, dynamic> && decodedResponse.containsKey('data')) {
+        return (decodedResponse['data'] as List)
+            .map((json) => Conversation.fromJson(json))
+            .toList();
+      } else {
+        throw Exception('Format de réponse inattendu');
+      }
+    } else {
+      throw Exception('Failed to load conversations');
+    }
+  }
+
+
+  Future<void> createConversation() async {
+    final int testUserId = 3; // Remplace par l'ID réel de ton utilisateur test
+    final token = await getToken();
+    final response = await http.post(
+      Uri.parse('$baseUrl/conversations'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, int>{
+        'participant_id': testUserId,
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      print("Conversation créée avec succès !");
+    } else {
+      throw Exception('Échec de la création de la conversation');
+    }
+  }
+
+
+  Future<List<Message>> fetchMessages(int conversationId) async {
+    final token = await getToken();
+    final response = await http.get(
+      Uri.parse('$baseUrl/messages/$conversationId'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      return (data['data'] as List)
+          .map((json) => Message.fromJson(json))
+          .toList();
     } else {
       throw Exception('Failed to load messages');
     }
   }
 
-  Future<void> sendMessage(String content) async {
+  Future<void> sendMessage(int conversationId, String content) async {
     final token = await getToken();
     final response = await http.post(
       Uri.parse('$baseUrl/messages'),
@@ -84,12 +136,15 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(<String, String>{
+      body: jsonEncode(<String, dynamic>{
+        'conversation_id': conversationId,
         'content': content,
       }),
     );
 
-    if (response.statusCode != 200) {
+    if (response.statusCode == 201) {
+      // Message envoyé avec succès
+    } else {
       throw Exception('Failed to send message');
     }
   }
