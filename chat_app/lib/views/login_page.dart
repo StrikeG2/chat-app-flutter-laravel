@@ -9,20 +9,20 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blueAccent[50],
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.greenAccent,
         elevation: 0,
         title: Text(
           'Se connecter',
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.close, color: Colors.black),
+            icon: Icon(Icons.close, color: Colors.white),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -31,48 +31,56 @@ class LoginScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
+            SizedBox(height: 40),
             Text(
               'Connexion à votre compte',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 40),
+            // Champ Email
             TextField(
               controller: emailController,
               decoration: InputDecoration(
                 labelText: 'Email',
                 labelStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green),
+                  borderSide: BorderSide(color: Colors.greenAccent),
+                  borderRadius: BorderRadius.circular(15),
                 ),
               ),
             ),
             SizedBox(height: 16),
+            // Champ Mot de passe
             TextField(
               controller: passwordController,
               decoration: InputDecoration(
                 labelText: 'Mot de passe',
                 labelStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green),
+                  borderSide: BorderSide(color: Colors.greenAccent),
+                  borderRadius: BorderRadius.circular(15),
                 ),
               ),
               obscureText: true,
             ),
-            SizedBox(height: 24),
+            SizedBox(height: 32),
+            // Bouton Se connecter
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                padding: EdgeInsets.symmetric(vertical: 12),
+                backgroundColor: Colors.greenAccent,
+                padding: EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -96,7 +104,8 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 20),
+            // Lien vers la page d'inscription
             Center(
               child: TextButton(
                 onPressed: () {
@@ -104,10 +113,15 @@ class LoginScreen extends StatelessWidget {
                 },
                 child: Text(
                   "Créer un compte",
-                  style: TextStyle(color: Colors.blue),
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),
+            SizedBox(height: 20),
           ],
         ),
       ),
