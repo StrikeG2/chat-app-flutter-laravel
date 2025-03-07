@@ -9,6 +9,17 @@ class ApiService {
   final String baseUrl = "http://10.0.2.2:8000/api";
   final FlutterSecureStorage storage = FlutterSecureStorage();
 
+  int? _currentUserId;
+  String? _token;
+  String? _name;
+  String? _email;
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
+
+  int? get currentUserId => _currentUserId;
+  String? get token => _token;
+  String? get name => _name;
+  String? get email => _email;
+
   Future<String?> getToken() async {
     return await storage.read(key: 'token');
   }
@@ -57,6 +68,27 @@ class ApiService {
       return json.decode(response.body);
     } else {
       throw Exception('Failed to login');
+    }
+  }
+
+  Future<void> fetchUserDetails() async {
+    final token = await getToken();
+    if (token != null) {
+      final response = await http.get(
+        Uri.parse('$baseUrl/user'), //
+        headers: {
+          'Authorization': 'Bearer $token', // Passe le token dans les headers
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        _currentUserId = data['id'];
+        _name = data['name'];
+        _email = data['email'];
+      } else {
+        throw Exception('Échec de la récupération des détails de l\'utilisateur');
+      }
     }
   }
 

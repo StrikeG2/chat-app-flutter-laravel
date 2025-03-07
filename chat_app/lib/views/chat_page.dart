@@ -4,7 +4,6 @@ import '../models/message_model.dart';
 import '../services/api_service.dart';
 import '../services/auth_service.dart';
 
-
 class ChatPage extends StatefulWidget {
   final int conversationId;
 
@@ -21,8 +20,23 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     final conversationId = ModalRoute.of(context)!.settings.arguments as int;
+
     return Scaffold(
-      appBar: AppBar(title: Text("Conversation ${widget.conversationId}")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
+        title: Text(
+          'Conversation ${widget.conversationId}',
+          style: TextStyle(color: Colors.black),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Column(
         children: [
           Expanded(
@@ -61,12 +75,18 @@ class _ChatPageState extends State<ChatPage> {
                     controller: _messageController,
                     decoration: InputDecoration(
                       hintText: 'Entrez votre message...',
-                      border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.grey[100],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     ),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: Icon(Icons.send, color: Colors.blueAccent),
                   onPressed: () async {
                     if (_messageController.text.isNotEmpty) {
                       await apiService.sendMessage(
@@ -98,15 +118,18 @@ class MessageBubble extends StatelessWidget {
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isMe ? Colors.blue : Colors.grey[300],
-          borderRadius: BorderRadius.circular(12),
+          color: isMe ? Colors.blueAccent : Colors.grey[300],
+          borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
           message,
-          style: TextStyle(color: isMe ? Colors.white : Colors.black),
+          style: TextStyle(
+            color: isMe ? Colors.white : Colors.black,
+            fontSize: 16,
+          ),
         ),
       ),
     );

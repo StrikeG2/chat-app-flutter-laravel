@@ -11,7 +11,33 @@ class ConversationListPage extends StatelessWidget {
     final apiService = Provider.of<ApiService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text("Conversations")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
+        title: Text(
+          'Conversations',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        automaticallyImplyLeading: false, // Désactive le bouton retour
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search, color: Colors.black),
+            onPressed: () {
+              // Action pour rechercher une conversation
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.account_circle, color: Colors.black), // Icône de profil
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile'); // Navigue vers la page de profil
+            },
+          ),
+        ],
+      ),
       body: FutureBuilder<List<Conversation>>(
         future: apiService.fetchConversations(),
         builder: (context, snapshot) {
@@ -28,9 +54,26 @@ class ConversationListPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final conversation = conversations[index];
                 return ListTile(
-                  leading: CircleAvatar(child: Icon(Icons.person)),
-                  title: Text(conversation.participantName),
-                  subtitle: Text(conversation.lastMessage ?? "Aucun message"),
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.greenAccent,
+                    child: Icon(Icons.person, color: Colors.white),
+                  ),
+                  title: Text(
+                    conversation.participantName,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  subtitle: Text(
+                    conversation.lastMessage ?? "Aucun message",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   onTap: () {
                     Navigator.pushNamed(
                       context,
@@ -57,7 +100,8 @@ class ConversationListPage extends StatelessWidget {
             );
           }
         },
-        child: Icon(Icons.add),
+        backgroundColor: Colors.greenAccent,
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
