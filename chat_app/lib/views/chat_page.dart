@@ -16,18 +16,36 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
   final ApiService apiService = ApiService();
+  String userName = '';  // Variable pour stocker le nom de l'utilisateur
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchConversationDetails();
+  }
+
+  // Fonction pour récupérer les détails de la conversation (nom de l'utilisateur)
+  Future<void> _fetchConversationDetails() async {
+    try {
+      final user = await apiService.fetchConversationUser(widget.conversationId);
+      setState(() {
+        userName = user.name; // Assigner le nom de l'utilisateur à la variable
+      });
+    } catch (e) {
+      // Gestion des erreurs
+      print("Erreur lors de la récupération des détails de la conversation: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final conversationId = ModalRoute.of(context)!.settings.arguments as int;
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
         title: Text(
-          'Conversation ${widget.conversationId}',
+          userName.isEmpty ? 'Chargement...' : 'Conversation avec $userName', // Afficher le nom de l'utilisateur ou "Chargement..." si non disponible
           style: TextStyle(color: Colors.black),
         ),
         leading: IconButton(

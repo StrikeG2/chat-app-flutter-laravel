@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../models/conversation.dart';
 import '../models/message_model.dart';
+import '../models/user_model.dart';
 
 class ApiService {
   final String baseUrl = "http://10.0.2.2:8000/api";
@@ -119,18 +120,15 @@ class ApiService {
   }
 
 
-  Future<void> createConversation() async {
-    final int testUserId = 3; // Remplace par l'ID réel de ton utilisateur test
+  Future<void> createConversationWithUser(int userId) async {
     final token = await getToken();
     final response = await http.post(
       Uri.parse('$baseUrl/conversations'),
-      headers: <String, String>{
+      headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(<String, int>{
-        'participant_id': testUserId,
-      }),
+      body: jsonEncode({'participant_id': userId}),
     );
 
     if (response.statusCode == 201) {
@@ -150,11 +148,11 @@ class ApiService {
       },
     );
 
+    print("Réponse de l'API pour fetchMessages: ${response.body}");
+
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      return (data['data'] as List)
-          .map((json) => Message.fromJson(json))
-          .toList();
+      final List<dynamic> data = json.decode(response.body);  // 🔄 C'est une liste, pas un Map !
+      return data.map((json) => Message.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load messages');
     }
@@ -180,4 +178,40 @@ class ApiService {
       throw Exception('Failed to send message');
     }
   }
+
+  Future<List<User>> searchUsers(String query) async {
+    final token = await getToken();
+    final response = await http.get(
+      Uri.parse('$baseUrl/user/search?query=${Uri.encodeComponent(query)}'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      print("Réponse de l'API: $data");
+
+      if (data.isNotEmpty) {
+        List<User> users = [User.fromJson(data)];
+        return users;
+      } else {
+        throw Exception('Aucun utilisateur trouvé');
+      }
+    } else {
+      throw Exception('Échec de la recherche des utilisateurs');
+    }
+  }
+
+  Future<User> fetchConversationUser(int conversationId) async {
+    final response = await http.get(Uri.parse('$baseUrl/conversations/$conversationId/user'));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return User.fromJson(data); // Transforme la réponse en objet User
+    } else {
+      throw Exception('Erreur lors de la récupération de l\'utilisateur');
+    }
+  }
+
 }

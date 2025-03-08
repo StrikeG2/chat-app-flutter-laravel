@@ -88,17 +88,8 @@ class ConversationListPage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          try {
-            await apiService.createConversation();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Conversation créée avec l'utilisateur test")),
-            );
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Erreur: $e")),
-            );
-          }
+        onPressed: () {
+          Navigator.pushNamed(context, '/searchUser'); // Navigue vers la page de recherche
         },
         backgroundColor: Colors.greenAccent,
         child: Icon(Icons.add, color: Colors.white),

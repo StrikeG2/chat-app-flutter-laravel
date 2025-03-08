@@ -1,6 +1,7 @@
 import 'package:chat_app/views/chat_page.dart';
 import 'package:chat_app/views/profile_page.dart';
 import 'package:chat_app/views/register_page.dart';
+import 'package:chat_app/views/search_user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'services/api_service.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/chat': (context) => ChatPage(conversationId: 2,),  // Définir la page de chat
         '/register_page': (context) => RegisterScreen(),  // Définir la page de chat
         '/profile': (context) => ProfilePage(),  // Définir la page de chat
+        '/searchUser': (context) => SearchUserPage(),  // Définir la page de chat
 
       },
     );

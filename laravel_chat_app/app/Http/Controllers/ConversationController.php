@@ -30,4 +30,22 @@ class ConversationController extends Controller
 
         return response()->json($conversation, 201);
     }
+
+    public function getUserByConversation($id)
+    {
+        // Récupérer la conversation par son ID
+        $conversation = Conversation::find($id);
+
+        if ($conversation) {
+            // Supposons que la conversation a un utilisateur lié à elle
+            $user = $conversation->user;  // Si tu utilises une relation de type `user()` dans le modèle Conversation
+
+            return response()->json([
+                'name' => $user->name,  // Nom de l'utilisateur
+                'email' => $user->email, // Email de l'utilisateur
+            ]);
+        } else {
+            return response()->json(['message' => 'Conversation not found'], 404);
+        }
+    }
 }
