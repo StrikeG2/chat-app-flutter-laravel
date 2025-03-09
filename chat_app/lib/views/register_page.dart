@@ -10,15 +10,15 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Fond blanc pour un design épuré
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white, // AppBar blanche
-        elevation: 0, // Pas d'ombre
-        automaticallyImplyLeading: false, // Supprime le bouton de retour
+        backgroundColor: Colors.white,
+        elevation: 0,
+        automaticallyImplyLeading: false,
         title: Text(
           'Créer un compte',
           style: TextStyle(
-            color: Colors.black87, // Texte en noir
+            color: Colors.black87,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -28,12 +28,11 @@ class RegisterScreen extends StatelessWidget {
         child: ListView(
           children: [
             SizedBox(height: 20),
-            // Icône ou logo (inspiré de Signal)
             Center(
               child: Icon(
-                Icons.person_add, // Icône pour représenter l'inscription
+                Icons.person_add,
                 size: 80,
-                color: Colors.blueAccent, // Couleur bleue
+                color: Colors.blueAccent,
               ),
             ),
             SizedBox(height: 40),
@@ -100,7 +99,6 @@ class RegisterScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            // Lien vers la page de connexion
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -130,7 +128,6 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  // Fonction pour construire un champ de texte stylisé
   Widget _buildTextField(TextEditingController controller, String label, bool obscureText) {
     return TextField(
       controller: controller,

@@ -13,29 +13,28 @@ class ConversationListPage extends StatelessWidget {
     final currentUserId = apiService.currentUserId; // ID de l'utilisateur connecté
 
     return Scaffold(
-      backgroundColor: Colors.white, // Fond blanc pour un design épuré
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white, // AppBar blanche
-        elevation: 1, // Légère ombre pour la séparation
+        backgroundColor: Colors.white,
+        elevation: 1,
         title: const Text(
           'Conversations',
           style: TextStyle(
-            color: Colors.black87, // Texte en noir
+            color: Colors.black87,
             fontWeight: FontWeight.bold,
           ),
         ),
-        automaticallyImplyLeading: false, // Désactive le bouton retour
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.search, color: Colors.black87), // Icône de recherche
+            icon: const Icon(Icons.search, color: Colors.black87),
             onPressed: () {
-              // Action pour rechercher une conversation
             },
           ),
           IconButton(
-            icon: const Icon(Icons.account_circle, color: Colors.black87), // Icône de profil
+            icon: const Icon(Icons.account_circle, color: Colors.black87),
             onPressed: () {
-              Navigator.pushNamed(context, '/profile'); // Navigue vers la page de profil
+              Navigator.pushNamed(context, '/profile');
             },
           ),
         ],

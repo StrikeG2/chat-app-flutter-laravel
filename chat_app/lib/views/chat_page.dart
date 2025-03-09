@@ -45,19 +45,19 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Fond blanc pour un design épuré
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white, // AppBar blanche
-        elevation: 1, // Légère ombre pour la séparation
+        backgroundColor: Colors.white,
+        elevation: 1,
         title: Text(
           userName.isEmpty ? 'Chargement...' : 'Conversation avec $userName',
           style: TextStyle(
-            color: Colors.black87, // Texte en noir
+            color: Colors.black87,
             fontWeight: FontWeight.bold,
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black87), // Icône de retour en noir
+          icon: Icon(Icons.arrow_back, color: Colors.black87),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -65,7 +65,6 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Column(
         children: [
-          // Zone de messages
           Expanded(
             child: FutureBuilder<List<Message>>(
               future: apiService.fetchMessages(widget.conversationId),
@@ -105,7 +104,7 @@ class _ChatPageState extends State<ChatPage> {
                     decoration: InputDecoration(
                       hintText: 'Entrez votre message...',
                       filled: true,
-                      fillColor: Colors.grey[100], // Fond gris clair
+                      fillColor: Colors.grey[100],
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide.none,
@@ -116,7 +115,7 @@ class _ChatPageState extends State<ChatPage> {
                 ),
                 // Bouton d'envoi
                 IconButton(
-                  icon: Icon(Icons.send, color: Colors.blueAccent), // Icône d'envoi en bleu
+                  icon: Icon(Icons.send, color: Colors.blueAccent),
                   onPressed: () async {
                     if (_messageController.text.isNotEmpty) {
                       await apiService.sendMessage(
@@ -137,7 +136,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 }
 
-// Widget pour afficher une bulle de message
 class MessageBubble extends StatelessWidget {
   final String message;
   final bool isMe;
@@ -152,13 +150,13 @@ class MessageBubble extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isMe ? Colors.blueAccent : Colors.grey[300], // Couleur bleue pour les messages de l'utilisateur
+          color: isMe ? Colors.blueAccent : Colors.grey[300],
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
           message,
           style: TextStyle(
-            color: isMe ? Colors.white : Colors.black87, // Texte blanc pour les messages de l'utilisateur
+            color: isMe ? Colors.white : Colors.black87,
             fontSize: 16,
           ),
         ),

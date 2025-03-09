@@ -19,31 +19,29 @@ class ProfilePage extends StatelessWidget {
         } else {
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.white, // AppBar blanche
-              elevation: 1, // Légère ombre pour la séparation
+              backgroundColor: Colors.white,
+              elevation: 1,
               title: Text(
                 'Profil',
                 style: TextStyle(
-                  color: Colors.black87, // Texte en noir
-                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
                 ),
               ),
-              centerTitle: true, // Centrer le titre
+              centerTitle: true,
             ),
             body: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Avatar de l'utilisateur
                   Center(
                     child: CircleAvatar(
                       radius: 70,
-                      backgroundColor: Colors.blueAccent[100], // Fond bleu clair
+                      backgroundColor: Colors.blueAccent[100],
                       child: Icon(
                         Icons.account_circle,
                         size: 90,
-                        color: Colors.white, // Icône blanche
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -70,7 +68,6 @@ class ProfilePage extends StatelessWidget {
                     style: TextStyle(fontSize: 16, color: Colors.black87),
                   ),
                   SizedBox(height: 30),
-                  // Bouton de déconnexion
                   Center(
                     child: ElevatedButton(
                       onPressed: () async {

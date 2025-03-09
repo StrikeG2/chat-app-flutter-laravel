@@ -9,18 +9,17 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Fond blanc pour un look épuré
+      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: ListView(
           children: [
-            SizedBox(height: 80), // Espace en haut pour un meilleur équilibre
-            // Logo ou icône (inspiré de Signal)
+            SizedBox(height: 80),
             Center(
               child: Icon(
-                Icons.message, // Icône de message pour représenter la messagerie
+                Icons.message,
                 size: 80,
-                color: Colors.blueAccent, // Couleur bleue pour l'icône
+                color: Colors.blueAccent,
               ),
             ),
             SizedBox(height: 40),
@@ -86,12 +85,12 @@ class LoginScreen extends StatelessWidget {
             // Bouton Se connecter
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent, // Bouton bleu
+                backgroundColor: Colors.blueAccent,
                 padding: EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                elevation: 0, // Pas d'ombre pour un look plat
+                elevation: 0,
               ),
               onPressed: () async {
                 try {
@@ -126,7 +125,7 @@ class LoginScreen extends StatelessWidget {
                 child: Text(
                   "Créer un compte",
                   style: TextStyle(
-                    color: Colors.blueAccent, // Lien en bleu
+                    color: Colors.blueAccent,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
