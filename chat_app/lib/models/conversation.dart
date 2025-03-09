@@ -23,10 +23,18 @@ class Conversation {
       id: json['id'],
       userId: json['user_id'],
       participantId: json['participant_id'],
-      participantName: json['participant']['name'], // Supposons que l'API retourne le participant
-      lastMessage: json['messages'].isNotEmpty ? json['messages'].last['content'] : null,
-      createdAt: DateTime.parse(json['created_at']), // Convertir la date de création
-      updatedAt: DateTime.parse(json['updated_at']), // Convertir la date de mise à jour
+      participantName: json['participant'] != null
+          ? json['participant']['name'] ?? 'Nom inconnu'
+          : 'Nom inconnu',  // Vérifier si 'participant' est présent
+      lastMessage: (json['messages'] != null && json['messages'].isNotEmpty)
+          ? json['messages'].last['content']
+          : null,
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : DateTime.now(),  // Valeur par défaut si la date est absente
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'])
+          : DateTime.now(),  // Valeur par défaut si la date est absente
     );
   }
 }

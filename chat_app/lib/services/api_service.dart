@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -6,7 +7,7 @@ import '../models/conversation.dart';
 import '../models/message_model.dart';
 import '../models/user_model.dart';
 
-class ApiService {
+class ApiService with ChangeNotifier {
   final String baseUrl = "http://10.0.2.2:8000/api";
   final FlutterSecureStorage storage = FlutterSecureStorage();
 
@@ -72,6 +73,15 @@ class ApiService {
     }
   }
 
+  Future<void> logout() async {
+    await deleteToken(); // Supprime le token du stockage sécurisé
+    _currentUserId = null;
+    _name = null;
+    _email = null;
+    notifyListeners(); // Notifie les listeners pour mettre à jour l'état
+  }
+
+
   Future<void> fetchUserDetails() async {
     final token = await getToken();
     if (token != null) {
@@ -101,6 +111,8 @@ class ApiService {
         'Authorization': 'Bearer $token',
       },
     );
+
+    print("Réponse de l'API fetchConversations: ${response.body}");
 
     if (response.statusCode == 200) {
       final dynamic decodedResponse = json.decode(response.body);
@@ -204,14 +216,41 @@ class ApiService {
   }
 
   Future<User> fetchConversationUser(int conversationId) async {
-    final response = await http.get(Uri.parse('$baseUrl/conversations/$conversationId/user'));
+    final token = await getToken();
+    if (token == null) {
+      throw Exception('Token non disponible');
+    }
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/conversations/$conversationId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      },
+    );
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      return User.fromJson(data); // Transforme la réponse en objet User
+      final data = jsonDecode(response.body);
+      print("Réponse API pour la conversation $conversationId : $data");
+
+      // Vérifiez si les données de la conversation sont correctes
+      if (data != null && data.containsKey('id') && data.containsKey('name') && data.containsKey('email')) {
+        return User.fromJson({
+          'id': data['id'],
+          'name': data['name'],
+          'email': data['email'],
+        });
+      } else {
+        throw Exception('Données de la conversation mal formatées');
+      }
     } else {
-      throw Exception('Erreur lors de la récupération de l\'utilisateur');
+      print("Erreur : ${response.body}");
+      throw Exception('Erreur lors de la récupération de l\'utilisateur pour la conversation');
     }
   }
+
+
+
+
 
 }

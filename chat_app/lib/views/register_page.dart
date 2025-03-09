@@ -10,35 +10,71 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // Fond blanc pour un design épuré
       appBar: AppBar(
-        backgroundColor: Colors.greenAccent,
-        title: Text('Register', style: TextStyle(color: Colors.white)),
-        elevation: 0,
+        backgroundColor: Colors.white, // AppBar blanche
+        elevation: 0, // Pas d'ombre
+        automaticallyImplyLeading: false, // Supprime le bouton de retour
+        title: Text(
+          'Créer un compte',
+          style: TextStyle(
+            color: Colors.black87, // Texte en noir
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(24.0),
         child: ListView(
           children: [
+            SizedBox(height: 20),
+            // Icône ou logo (inspiré de Signal)
+            Center(
+              child: Icon(
+                Icons.person_add, // Icône pour représenter l'inscription
+                size: 80,
+                color: Colors.blueAccent, // Couleur bleue
+              ),
+            ),
+            SizedBox(height: 40),
+            // Titre
             Text(
-              'Create an Account',
+              'Inscription',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
               ),
+              textAlign: TextAlign.center,
             ),
-            SizedBox(height: 16.0),
-            _buildTextField(nameController, 'Name', false),
+            SizedBox(height: 10),
+            Text(
+              'Créez un compte pour commencer',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 40),
+            // Champ Nom
+            _buildTextField(nameController, 'Nom', false),
+            SizedBox(height: 16),
+            // Champ Email
             _buildTextField(emailController, 'Email', false),
-            _buildTextField(passwordController, 'Password', true),
-            SizedBox(height: 24.0),
+            SizedBox(height: 16),
+            // Champ Mot de passe
+            _buildTextField(passwordController, 'Mot de passe', true),
+            SizedBox(height: 32),
+            // Bouton S'inscrire
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.greenAccent,
+                backgroundColor: Colors.blueAccent, // Bouton bleu
                 padding: EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
+                elevation: 0, // Pas d'ombre pour un look plat
               ),
               onPressed: () async {
                 try {
@@ -50,22 +86,41 @@ class RegisterScreen extends StatelessWidget {
                   Navigator.pushReplacementNamed(context, '/login');
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Failed to register: $e')),
+                    SnackBar(content: Text('Échec de l\'inscription: $e')),
                   );
                 }
               },
-              child: Text('Register', style: TextStyle(fontSize: 16)),
+              child: Text(
+                'S\'inscrire',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ),
-            SizedBox(height: 16.0),
+            SizedBox(height: 20),
+            // Lien vers la page de connexion
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Already have an account?"),
+                Text(
+                  'Vous avez déjà un compte ?',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                  ),
+                ),
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/login');
                   },
-                  child: Text('Login', style: TextStyle(color: Colors.greenAccent)),
+                  child: Text(
+                    'Se connecter',
+                    style: TextStyle(
+                      color: Colors.blueAccent, // Lien en bleu
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -75,25 +130,25 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
+  // Fonction pour construire un champ de texte stylisé
   Widget _buildTextField(TextEditingController controller, String label, bool obscureText) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle: TextStyle(color: Colors.black54),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.greenAccent, width: 1.5),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.greenAccent, width: 2),
-          ),
-          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.grey[600]),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey[300]!),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blueAccent),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        filled: true,
+        fillColor: Colors.grey[100],
+        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       ),
     );
   }
